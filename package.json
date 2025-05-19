@@ -9,6 +9,8 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "latest",
+    "@types/bun": "^1.2.13",
+    "openai": "^4.100.0",
     "typescript": "latest",
     "wrangler": "latest"
   },
