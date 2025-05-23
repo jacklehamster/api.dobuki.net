@@ -4,7 +4,7 @@ import { systemPrompt } from "./systemprompt";
 import OpenAI from "openai/index.mjs";
 
 interface EnvironmentVariables {
-  OPENAI_POWERTROLL_API_KEY: { get(): Promise<string> };
+  OPENAI_POWERTROLL_API_KEY: string;
   OPENAI_ORG_ID: string;
   OPENAI_PROJECT_ID: string;
 }
@@ -13,7 +13,7 @@ let openai: OpenAI | null = null;
 async function getOpenAI(env: EnvironmentVariables) {
   if (!openai) {
     openai = new OpenAI({
-      apiKey: await env.OPENAI_POWERTROLL_API_KEY.get(),
+      apiKey: env.OPENAI_POWERTROLL_API_KEY,
       organization: env.OPENAI_ORG_ID,
       project: env.OPENAI_PROJECT_ID,
     });
@@ -23,7 +23,6 @@ async function getOpenAI(env: EnvironmentVariables) {
 
 export default {
   async fetch(request: Request, env: EnvironmentVariables): Promise<Response> {
-    console.log(env);
     const url = new URL(request.url);
 
     if (url.pathname === "/favicon.ico") {
