@@ -2,3 +2,7 @@ name = "api-dobuki-net"
 compatibility_date = "2025-03-21"
 main = "src/index.ts"
 compatibility_flags = ["nodejs_compat"]
+
+[vars]
+OPENAI_ORG_ID = "org-uktBsveUaXeMNXTgnjk5JlBA"
+OPENAI_PROJECT_ID = "proj_14nsI578VavWlr7T8forl9jv"

@@ -4,22 +4,25 @@ import { systemPrompt } from "./systemprompt";
 import OpenAI from "openai/index.mjs";
 
 interface EnvironmentVariables {
-  OPENAI_API_KEY: string;
+  OPENAI_POWERTROLL_API_KEY: string;
+  OPENAI_ORG_ID: string;
+  OPENAI_PROJECT_ID: string;
 }
 
 let openai: OpenAI | null = null;
 function getOpenAI(env: EnvironmentVariables) {
   if (!openai) {
     openai = new OpenAI({
-      baseURL: "https://ai.dobuki.net",
-      apiKey: env.OPENAI_API_KEY,
+      apiKey: env.OPENAI_POWERTROLL_API_KEY,
+      organization: env.OPENAI_ORG_ID,
+      project: env.OPENAI_PROJECT_ID,
     });
   }
   return openai;
 }
 
 export default {
-  async fetch(request: Request, env: any): Promise<Response> {
+  async fetch(request: Request, env: EnvironmentVariables): Promise<Response> {
     const url = new URL(request.url);
 
     if (url.pathname === "/favicon.ico") {
@@ -146,11 +149,10 @@ export async function comment(
   const response = await openai.chat.completions.create({
     model,
     messages: allMessages,
-    // temperature: params?.temperature ?? 1,
-    // max_tokens: params?.max_tokens ?? 256,
-    // top_p: params?.top_p ?? 1,
-    // frequency_penalty: params?.frequency_penalty ?? 0,
-    // presence_penalty: params?.presence_penalty ?? 0,
+    temperature: params?.temperature ?? 1,
+    top_p: params?.top_p ?? 1,
+    frequency_penalty: params?.frequency_penalty ?? 0,
+    presence_penalty: params?.presence_penalty ?? 0,
   }, {
   });
 
