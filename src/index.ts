@@ -4,16 +4,16 @@ import { systemPrompt } from "./systemprompt";
 import OpenAI from "openai/index.mjs";
 
 interface EnvironmentVariables {
-  OPENAI_POWERTROLL_API_KEY: string;
+  OPENAI_POWERTROLL_API_KEY: { get(): Promise<string> };
   OPENAI_ORG_ID: string;
   OPENAI_PROJECT_ID: string;
 }
 
 let openai: OpenAI | null = null;
-function getOpenAI(env: EnvironmentVariables) {
+async function getOpenAI(env: EnvironmentVariables) {
   if (!openai) {
     openai = new OpenAI({
-      apiKey: env.OPENAI_POWERTROLL_API_KEY,
+      apiKey: await env.OPENAI_POWERTROLL_API_KEY.get(),
       organization: env.OPENAI_ORG_ID,
       project: env.OPENAI_PROJECT_ID,
     });
@@ -23,6 +23,7 @@ function getOpenAI(env: EnvironmentVariables) {
 
 export default {
   async fetch(request: Request, env: EnvironmentVariables): Promise<Response> {
+    console.log(env);
     const url = new URL(request.url);
 
     if (url.pathname === "/favicon.ico") {
@@ -32,7 +33,7 @@ export default {
     //FORMAT:
     //        const response = await fetch(`${OPEN_AI_URL}?dictionary=${JSON.stringify(dico)}&situation=${HumanEvent.LANG}.${situation}&seed=${seed ?? ""}${customFieldsParams}`);
     if (url.pathname === "/comment") {
-      const openai = getOpenAI(env);
+      const openai = await getOpenAI(env);
       const query: any = {};
       url.searchParams.entries().forEach(([key, value]) => {
         query[key] = value;

@@ -2,6 +2,9 @@ name = "api-dobuki-net"
 compatibility_date = "2025-03-21"
 main = "src/index.ts"
 compatibility_flags = ["nodejs_compat"]
+secrets_store_secrets = [
+  { binding = "OPENAI_POWERTROLL_API_KEY", store_id= "fe7e06e94d2549838214f34c97c0e182", secret_name = "OPENAI_POWERTROLL_API_KEY" }
+]
 
 [vars]
 OPENAI_ORG_ID = "org-uktBsveUaXeMNXTgnjk5JlBA"
